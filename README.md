@@ -20,11 +20,13 @@
 AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsAfterInitialization(),继而调用其子类的
 InfrastructureAdvisorAutoProxyCreator.postProcessAfterInitialization().最后调用AbstractAutoProxyCreator.wrapIfNecessary()方法。
 
-#### (2) advice是如何织入的？
+#### (2) 如何判断这个bean是否需要变成代理？
 
 &ensp;&ensp;&ensp;&ensp;wrapIfNecessary()方法中先获取全局的advice,发现有一个advice是BeanFactoryTransactionAttributeSourceAdvisor（估计是@EnableTransactionManagement注解起的作用）.现在要做的是，把BeanFactoryTransactionAttributeSourceAdvisor织入目标bean（TestService）中.
     
 &ensp;&ensp;&ensp;&ensp;先判断TestService是否与BeanFactoryTransactionAttributeSourceAdvisor匹配,用AopUtils.canApply(candidate, clazz, hasIntroductions)方法判断.其中调用了AopUtils.canApply(Pointcut pc, clazz, hasIntroductions)方法,然后通过反射遍历了目标类（参数clazz）的各个方法.最终调用了AbstractFallbackTransactionAttributeSource.getTransactionAttribute(Method method, Class<?> targetClass) 方法,获取了@Trasatinal注解里的属性(如“PROPAGATION_REQUIRED,ISOLATION_DEFAULT”),如果不为空则判断为匹配。
+
+#### (3) 把它变成代理。
 
 &ensp;&ensp;&ensp;&ensp;判断为匹配就开始创建代理,调用AbstractAutoProxyCreator.createProxy(Class<?> beanClass, String beanName, Object[] specificInterceptors, TargetSource targetSource)方法.参数中specificInterceptors 为要织入的拦截器.最终创建出来的代理类是"TestService$$EnhancerBySpringCGLIB".
 
