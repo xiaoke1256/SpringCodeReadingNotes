@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd 
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd 
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!-- 采用java方式进行装配 -->
+	<context:annotation-config/>
+	<bean class="com.xiaoke1256.spring.mytest.SpringbootApplication"></bean>
+	
+	<!-- Context Define   -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:application.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Hibernate Session Define   -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan" value="com.xiaoke1256.spring.mytest.bo"/>
+		<property name="mappingDirectoryLocations">
+			<list>
+				<value>classpath:/com/xiaoke1256/spring/mytest</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					${spring.jpa.database-platform}
+				</prop>
+				<!-- 
+				<prop key="hibernate.cache.provider_class">
+					${hibernate.cache.provider_class}
+				</prop>
+				<prop key="hibernate.cache.use_query_cache">
+					${hibernate.cache.use_query_cache}
+				</prop> -->
+				<prop key="hibernate.show_sql">
+					${spring.jpa.show-sql}
+				</prop>
+				<!-- 
+				<prop key="hibernate.query.factory_class">
+					${hibernate.query.factory_class}
+				</prop>
+				<prop key="hibernate.jdbc.fetch_size">
+					${hibernate.jdbc.fetch_size}
+				</prop>
+				<prop key="hibernate.jdbc.batch_size">
+					${hibernate.jdbc.batch_size}
+				</prop> 
+				 -->
+				<prop key="c3p0.maxPoolSize">2000</prop>
+				<prop key="c3p0.minPoolSize">5</prop>
+				<prop key="c3p0.maxIdleTime">60</prop>
+				<prop key="c3p0.min_size">5</prop>
+				<prop key="c3p0.max_size">2000</prop>
+				<prop key="c3p0.time_out">1800</prop>
+				<prop key="c3p0.maxStatements">20</prop>
+				<prop key="c3p0.maxStatements">2000</prop>
+				<prop key="c3p0.idleConnectionTestPeriod">900</prop>
+				<prop key="c3p0.acquireIncrement">2</prop>
+				<prop key="c3p0.initialPoolSize">5</prop>
+				<prop key="c3p0.acquireRetryAttempts">20</prop>
+				<prop key="c3p0.acquireRetryDelay">1500</prop>
+				<prop key="c3p0.autoCommitOnClose">true</prop>
+				<prop key="c3p0.checkoutTimeout">500000</prop>
+				<prop key="c3p0.numHelperThreads">40</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+</beans>
