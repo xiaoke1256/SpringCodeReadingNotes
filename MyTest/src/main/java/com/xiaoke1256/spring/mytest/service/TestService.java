@@ -24,6 +24,7 @@ public class TestService {
 	public void saveTest(TestTable test,boolean isRollback) {
 		test.setId(UUID.randomUUID().toString().replace("-", ""));
 		baseDao.save(test);
+		baseDao.flush();
 		System.out.print("saved");
 		if(isRollback)
 			throw new RuntimeException("Rollback!");

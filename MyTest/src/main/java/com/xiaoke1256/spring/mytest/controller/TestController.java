@@ -6,12 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.xiaoke1256.spring.mytest.bo.TestTable;
+import com.xiaoke1256.spring.mytest.service.Test2Service;
 import com.xiaoke1256.spring.mytest.service.TestService;
 
 @Controller
 public class TestController {
 	@Autowired
 	private TestService testService;
+	
+	@Autowired
+	private Test2Service test2Service;
 	
 	public void doTest() {
 		System.out.print("TEstTestTest");
@@ -38,7 +42,19 @@ public class TestController {
 		}
 		count = testService.count();
 		System.out.println("Count After Save: "+count);
-		System.out.print("Saved!");
+		System.out.print("Saved1!");
+		
+		
+		count = testService.count();
+		System.out.println("Count before Save: "+count);
+		try {
+			test2Service.saveTest(test ,true);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		count = testService.count();
+		System.out.println("Count After Save: "+count);
+		System.out.print("Saved2!");
 	}
 
 }

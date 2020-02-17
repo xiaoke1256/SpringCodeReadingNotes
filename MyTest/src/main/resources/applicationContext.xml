@@ -115,7 +115,7 @@
 	<!-- Sevice Bean -->
 	<bean id="test2Servce" parent="basicTxProxy">
 		<property name="target">
-			<bean class="com.xiaoke1256.spring.mytest.service.Test2Servce">
+			<bean class="com.xiaoke1256.spring.mytest.service.Test2Service">
 			</bean>
 		</property>
 	</bean>	

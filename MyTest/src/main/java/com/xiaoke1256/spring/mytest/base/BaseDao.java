@@ -37,6 +37,10 @@ public class BaseDao {
     	}
     	return 0;
     }
+    
+    public void flush() {
+    	getSession().flush();
+    }
 
 	/**
      * 新增数据到数据库。
