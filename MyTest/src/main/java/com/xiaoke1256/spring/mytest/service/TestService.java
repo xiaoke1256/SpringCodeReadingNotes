@@ -21,4 +21,16 @@ public class TestService {
 		test.setId(UUID.randomUUID().toString().replace("-", ""));
 		baseDao.save(test);
 	}
+	
+	public void saveTest(TestTable test,boolean isRollback) {
+		test.setId(UUID.randomUUID().toString().replace("-", ""));
+		baseDao.save(test);
+		System.out.print("saved");
+		if(isRollback)
+			throw new RuntimeException("Rollback!");
+	}
+	
+	public int count() {
+		return baseDao.count(TestTable.class);
+	}
 }

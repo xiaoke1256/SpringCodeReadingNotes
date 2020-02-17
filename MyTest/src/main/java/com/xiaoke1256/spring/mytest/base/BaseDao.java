@@ -1,7 +1,9 @@
 package com.xiaoke1256.spring.mytest.base;
 
 import java.io.Serializable;
+import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,15 @@ public class BaseDao {
     public Object get(Class<?> clazz, Serializable id) {
     	return getSession().get(clazz, id);
 	}
+    
+    public int count(Class<?> clazz) {
+    	Query q = getSession().createQuery("select count(*) from "+clazz.getSimpleName());
+    	List<?> list = q.list();
+    	if(list!=null && list.size()>0) {
+    		return ((Number)list.get(0)).intValue();
+    	}
+    	return 0;
+    }
 
 	/**
      * 新增数据到数据库。

@@ -22,5 +22,23 @@ public class TestController {
 		testService.saveTest(test );
 		System.out.print("Saved!");
 	}
+	
+	public void doTestWithRollback() {
+		System.out.print("TEstTestTest222");
+		System.out.println("testService's class:"+testService.getClass());
+		TestTable test = new TestTable();
+		test.setAa(String.valueOf(new Random().nextInt(100000)));
+		test.setBb(String.valueOf(new Random().nextInt(100000)));
+		int count = testService.count();
+		System.out.println("Count before Save: "+count);
+		try {
+			testService.saveTest(test ,true);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		count = testService.count();
+		System.out.println("Count After Save: "+count);
+		System.out.print("Saved!");
+	}
 
 }
